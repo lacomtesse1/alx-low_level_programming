@@ -1,37 +1,41 @@
 #include "lists.h"
 
 /**
- * 
+ * free_listint_safe - it frees a linked list even if it contains a loop
+ * @h: pointer to  first node in  linked list
+ *
+ * Return: number of nodes freed
  */
-size_t free_listint_safe(listint_t **head)
+size_t free_listint_safe(listint_t **h)
 {
-    size_t count = 0;
-    int diff;
-    listint_t *temp;
+	size_t nodes_freed = 0;
+	int diff;
+	listint_t *next_node;
 
-    if (!head || !*head)
-        return (0);
+	if (!h || !*h)
+		return (0);
 
-    while (*head)
-    {
-        diff = *head - (*head)->next;
-        if (diff > 0)
-        {
-            temp = (*head)->next;
-            free(*head);
-            *head = temp;
-            count++;
-        }
-        else
-        {
-            free(*head);
-            *head = NULL;
-            count++;
-            break;
-        }
-    }
+	while (*h)
+	{
+		diff = *h - (*h)->next;
+		if (diff > 0)
+		{
+			next_node = (*h)->next;
+			free(*h);
+			*h = next_node;
+			nodes_freed++;
+		}
+		else
+		{
+			free(*h);
+			*h = NULL;
+			nodes_freed++;
+			break;
+		}
+	}
 
-    *head = NULL;
+	*h = NULL;
 
-    return (count);
+	return (nodes_freed);
 }
+
